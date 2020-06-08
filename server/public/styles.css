@@ -7,3 +7,12 @@ header {
   padding-bottom: 1.5rem;
   border-bottom: rgb(224, 223, 223) solid 1px;
 }
+
+
+.cancel{
+  margin-left: 2rem;
+}
+
+.add{
+  width: 8rem;
+}
