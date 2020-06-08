@@ -10,6 +10,7 @@ class App extends React.Component {
       grades: []
     };
     this.addAGrade = this.addAGrade.bind(this);
+    this.deleteAGrade = this.deleteAGrade.bind(this);
   }
 
   componentDidMount() {
@@ -31,11 +32,23 @@ class App extends React.Component {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: fullGrade.name, grade: fullGrade.grade, course: fullGrade.course })
     };
-    // const currentGrades = this.state.grades.slice();
     fetch('/api/grades', requestObject)
       .then(response => response.json())
       .then(data => {
         currentArray.push(data);
+        this.setState({ grades: currentArray });
+      });
+  }
+
+  deleteAGrade(gradeID) {
+    const currentArray = this.state.grades.slice();
+    const idIndex = currentArray.findIndex(grade => grade.id === gradeID);
+
+    const requestData = { method: 'DELETE' };
+    fetch(`/api/grades/${gradeID}`, requestData)
+      .then(response => response.json())
+      .then(data => {
+        currentArray.splice(idIndex, 1);
         this.setState({ grades: currentArray });
       });
   }
@@ -60,10 +73,10 @@ class App extends React.Component {
         <Header gradeAverage ={this.getAverageGrade()}/>
         <div className='container d-flex'>
           <div className='table-container col col-9'>
-            <GradeTable grades ={this.state.grades}/>
+            <GradeTable grades={this.state.grades} deleteAGrade={this.deleteAGrade}/>
           </div>
           <div className='col col-3'>
-            <GradeForm addGrade = {this.addAGrade}/>
+            <GradeForm addGrade = {this.addAGrade} />
           </div>
         </div>
       </div>
