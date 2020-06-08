@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './header';
 import GradeTable from './GradeTable';
+import GradeForm from './GradeForm';
 
 class App extends React.Component {
   constructor(props) {
@@ -8,6 +9,7 @@ class App extends React.Component {
     this.state = {
       grades: []
     };
+    this.addAGrade = this.addAGrade.bind(this);
   }
 
   componentDidMount() {
@@ -22,6 +24,22 @@ class App extends React.Component {
       .catch(err => console.error(err));
   }
 
+  addAGrade(fullGrade) {
+    const currentArray = this.state.grades.slice();
+    const requestObject = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: fullGrade.name, grade: fullGrade.grade, course: fullGrade.course })
+    };
+    // const currentGrades = this.state.grades.slice();
+    fetch('/api/grades', requestObject)
+      .then(response => response.json())
+      .then(data => {
+        currentArray.push(data);
+        this.setState({ grades: currentArray });
+      });
+  }
+
   getAverageGrade() {
     const gradesArray = this.state.grades;
     let sum = 0;
@@ -29,19 +47,24 @@ class App extends React.Component {
       return 0;
     }
     for (let index = 0; index < gradesArray.length; index++) {
-      sum += gradesArray[index].grade;
+      sum += parseInt(gradesArray[index].grade, 10);
     }
     const average = sum / gradesArray.length;
 
-    return average;
+    return average.toFixed(2);
   }
 
   render() {
     return (
       <div className='container'>
         <Header gradeAverage ={this.getAverageGrade()}/>
-        <div className='container'>
-          <GradeTable grades ={this.state.grades}/>
+        <div className='container d-flex'>
+          <div className='table-container col col-9'>
+            <GradeTable grades ={this.state.grades}/>
+          </div>
+          <div className='col col-3'>
+            <GradeForm addGrade = {this.addAGrade}/>
+          </div>
         </div>
       </div>
     );
