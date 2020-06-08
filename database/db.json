@@ -1,7 +1,7 @@
 {
   "grades": [
     {
-      "id": 5,
+      "id": 11,
       "name": "Kyle Simpson",
       "course": "JavaScript",
       "grade": 100
@@ -35,18 +35,6 @@
       "grade": "89",
       "course": "CSS",
       "id": 35
-    },
-    {
-      "name": "Adam",
-      "grade": "88",
-      "course": "HTML",
-      "id": 36
-    },
-    {
-      "name": "Bryan",
-      "grade": "88",
-      "course": "HTML",
-      "id": 37
     }
   ]
 }
