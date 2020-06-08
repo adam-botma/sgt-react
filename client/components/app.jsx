@@ -18,10 +18,7 @@ class App extends React.Component {
   getGrades() {
     fetch('/api/grades')
       .then(response => response.json())
-      .then(data => {
-        this.setState({ grades: data });
-
-      })
+      .then(data => this.setState({ grades: data }))
       .catch(err => console.error(err));
   }
 
